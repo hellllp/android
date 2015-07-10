@@ -535,7 +535,7 @@
     <string name="storage_description_unknown">Unknown</string>
 
     <string name="appwidget_title_content_description">widget</string>
-    <string name="configure">Configure</string>
-    <string name="add_widget">Add widget</string>
+    <string name="appwidget_start_sync">Start synchronization for account %1$s</string>
+
 
 </resources>
