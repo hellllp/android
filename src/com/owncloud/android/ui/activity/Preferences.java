@@ -29,6 +29,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -38,6 +39,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -177,6 +179,29 @@ public class Preferences extends PreferenceActivity {
                 return true;
             }
         });
+		final Preference syncGapPreference = findPreference("time_between_sync");
+		if (syncGapPreference != null) {
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+			final Resources res = getResources();
+			int minutesBetweenSyncs = Integer.parseInt(prefs.getString("time_between_sync", "0"));
+			syncGapPreference.setSummary(res.getQuantityString(R.plurals.minutes, minutesBetweenSyncs, minutesBetweenSyncs));
+			syncGapPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValueObject) {
+					if (newValueObject instanceof String && ((String)newValueObject).length() > 0) {
+						int newValue = Integer.parseInt((String)newValueObject);
+						if (newValue > 0) {
+							syncGapPreference.setSummary(res.getQuantityString(R.plurals.minutes, newValue, newValue));
+							return true;
+						}
+					}
+					return false;
+				}
+			});
+
+		}
+
+
 
         PreferenceCategory preferenceCategory = (PreferenceCategory) findPreference("more");
 

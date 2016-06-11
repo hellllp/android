@@ -390,7 +390,14 @@
     <string name="prefs_category_instant_uploading">Instant uploads</string>
     <string name="prefs_category_details">Details</string>
 
+    <string name="prefs_time_between_sync">Time between synchronization</string>
+    <plurals name="minutes">
+        <item quantity="one">One minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+
 	<string name="prefs_instant_video_upload_path_title">Instant upload video folder</string>
+
     <string name="sync_folder_failed_content">Synchronization of %1$s folder could not be completed</string>
 
 	<string name="shared_subject_header">shared</string>

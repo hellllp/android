@@ -76,6 +76,7 @@
 	<PreferenceCategory android:title="@string/prefs_category_details">
 		<android.preference.CheckBoxPreference android:title="@string/prefs_passcode" android:key="set_pincode" />
 		<android.preference.CheckBoxPreference android:title="@string/prefs_show_hidden_files" android:key="show_hidden_files" />
+        <android.preference.EditTextPreference android:numeric="integer" android:inputType="number" android:defaultValue="60" android:title="@string/prefs_time_between_sync" android:key="time_between_sync" />
 	</PreferenceCategory>
 
 	<PreferenceCategory android:title="@string/prefs_category_more" android:key="more">

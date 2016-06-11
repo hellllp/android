@@ -50,9 +50,12 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SyncResult;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.SharedPreferencesCompat;
 
 /**
  * Implementation of {@link AbstractThreadedSyncAdapter} responsible for synchronizing 
@@ -145,6 +148,8 @@ public class FileSyncAdapter extends AbstractOwnCloudSyncAdapter {
             String authority, ContentProviderClient providerClient,
             SyncResult syncResult) {
 
+		int timeTillNextSyncInMinutes = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt("time_between_sync", 60);
+
         mCancellation = false;
         mIsManualSync = extras.getBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, false);
         mFailedResultsCounter = 0;
@@ -154,7 +159,7 @@ public class FileSyncAdapter extends AbstractOwnCloudSyncAdapter {
         mForgottenLocalFiles = new HashMap<String, String>();
         mSyncResult = syncResult;
         mSyncResult.fullSyncRequested = false;
-        mSyncResult.delayUntil = (System.currentTimeMillis()/1000) + 3*60*60; // avoid too many automatic synchronizations
+        mSyncResult.delayUntil = (System.currentTimeMillis()/1000) + timeTillNextSyncInMinutes*60; // avoid too many automatic synchronizations
 
         this.setAccount(account);
         this.setContentProviderClient(providerClient);
