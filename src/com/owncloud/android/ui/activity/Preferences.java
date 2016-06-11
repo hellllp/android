@@ -183,7 +183,7 @@ public class Preferences extends PreferenceActivity {
 		if (syncGapPreference != null) {
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 			final Resources res = getResources();
-			int minutesBetweenSyncs = Integer.parseInt(prefs.getString("time_between_sync", "0"));
+			int minutesBetweenSyncs = Integer.parseInt(prefs.getString("time_between_sync", "60"));
 			syncGapPreference.setSummary(res.getQuantityString(R.plurals.minutes, minutesBetweenSyncs, minutesBetweenSyncs));
 			syncGapPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 				@Override
