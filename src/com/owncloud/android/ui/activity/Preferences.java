@@ -112,6 +112,7 @@ public class Preferences extends PreferenceActivity {
     private Preference mPrefInstantVideoUploadUseSubfolders;
     private Preference mPrefInstantVideoUploadPathWiFi;
     private Preference mPrefInstantVideoUploadOnlyOnCharging;
+    private Preference mPrefTimeBetweenSynchronizations;
     private String mUploadVideoPath;
 
     @SuppressWarnings("deprecation")
@@ -185,32 +186,22 @@ public class Preferences extends PreferenceActivity {
                 return true;
             }
         });
-		final Preference syncGapPreference = findPreference("time_between_sync");
-		if (syncGapPreference != null) {
-            boolean isAutoSyncEnabled = ContentResolver.getSyncAutomatically(AccountUtils.getCurrentOwnCloudAccount(this), getString(R.string.authority));
-            syncGapPreference.setEnabled(isAutoSyncEnabled);
+        mPrefTimeBetweenSynchronizations = findPreference("time_between_sync");
+		if (mPrefTimeBetweenSynchronizations != null) {
 
-            if (isAutoSyncEnabled) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                final Resources res = getResources();
-                int minutesBetweenSyncs = Integer.parseInt(prefs.getString("time_between_sync", "60"));
-                syncGapPreference.setSummary(res.getQuantityString(R.plurals.minutes, minutesBetweenSyncs, minutesBetweenSyncs));
-                syncGapPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValueObject) {
-                        if (newValueObject instanceof String && ((String) newValueObject).length() > 0) {
-                            int newValue = Integer.parseInt((String) newValueObject);
-                            if (newValue > 0) {
-                                syncGapPreference.setSummary(res.getQuantityString(R.plurals.minutes, newValue, newValue));
-                                return true;
-                            }
+            mPrefTimeBetweenSynchronizations.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValueObject) {
+                    if (newValueObject instanceof String && ((String) newValueObject).length() > 0) {
+                        int newValue = Integer.parseInt((String) newValueObject);
+                        if (newValue > 0) {
+                            mPrefTimeBetweenSynchronizations.setSummary(getResources().getQuantityString(R.plurals.minutes, newValue, newValue));
+                            return true;
                         }
-                        return false;
                     }
-                });
-            } else {
-                syncGapPreference.setSummary(R.string.prefs_time_between_sync_sync_disabled);
-            }
+                    return false;
+                }
+            });
 
 		}
 
@@ -554,6 +545,20 @@ public class Preferences extends PreferenceActivity {
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean state = appPrefs.getBoolean(PassCodeActivity.PREFERENCE_SET_PASSCODE, false);
         pCode.setChecked(state);
+
+        boolean isAutoSyncEnabled = ContentResolver.getSyncAutomatically(AccountUtils.getCurrentOwnCloudAccount(this), getString(R.string.authority));
+        mPrefTimeBetweenSynchronizations.setEnabled(isAutoSyncEnabled);
+        String summary;
+        if (isAutoSyncEnabled) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            final Resources res = getResources();
+            int minutesBetweenSyncs = Integer.parseInt(prefs.getString("time_between_sync", "60"));
+            summary = res.getQuantityString(R.plurals.minutes, minutesBetweenSyncs, minutesBetweenSyncs);
+        } else {
+            summary = getString(R.string.prefs_time_between_sync_sync_disabled);
+        }
+        mPrefTimeBetweenSynchronizations.setSummary(summary);
+
     }
 
     @Override
