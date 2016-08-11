@@ -85,6 +85,9 @@
 
     <!-- login data links -->
     <string name="login_data_own_scheme" translatable="false">cloud</string>
+
+    <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+
 </resources>
 
 
