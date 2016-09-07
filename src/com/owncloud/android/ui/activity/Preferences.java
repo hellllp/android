@@ -78,19 +78,21 @@ public class Preferences extends PreferenceActivity {
     private static final int ACTION_REQUEST_PASSCODE = 5;
     private static final int ACTION_CONFIRM_PASSCODE = 6;
 
-    public static final String INSTANT_UPLOAD_PATH_ACCOUNT = "instant_upload_path_account";
-    public static final String INSTANT_UPLOAD_PATH = "instant_upload_path";
-    public static final String INSTANT_VIDEO_UPLOAD_PATH = "instant_video_upload_path";
-    public static final String INSTANT_VIDEO_UPLOAD_PATH_ACCOUNT = "instant_video_upload_path_account";
-    public static final String INSTANT_VIDEO_UPLOAD_PATH_USE_SUBFOLDERS = "instant_video_upload_path_use_subfolders";
-    public static final String INSTANT_VIDEO_UPLOAD_ON_WIFI = "instant_video_upload_on_wifi";
-    public static final String INSTANT_VIDEO_UPLOADING = "instant_video_uploading";
-    public static final String PREFS_INSTANT_BEHAVIOUR = "prefs_instant_behaviour";
-    public static final String ABOUT_APP = "about_app";
     public static final String INSTANT_UPLOADING_CATEGORY = "instant_uploading_category";
     public static final String INSTANT_UPLOAD_PATH_USE_SUBFOLDERS = "instant_upload_path_use_subfolders";
     public static final String INSTANT_UPLOAD_ON_WIFI = "instant_upload_on_wifi";
     public static final String INSTANT_UPLOADING = "instant_uploading";
+    public static final String INSTANT_UPLOAD_PATH_ACCOUNT = "instant_upload_path_account";
+    public static final String INSTANT_UPLOAD_PATH = "instant_upload_path";
+    public static final String INSTANT_UPLOAD_ON_CHARGING = "instant_upload_on_charging";
+    public static final String INSTANT_VIDEO_UPLOAD_PATH = "instant_video_upload_path";
+    public static final String INSTANT_VIDEO_UPLOAD_PATH_ACCOUNT = "instant_video_upload_path_account";
+    public static final String INSTANT_VIDEO_UPLOAD_PATH_USE_SUBFOLDERS = "instant_video_upload_path_use_subfolders";
+    public static final String INSTANT_VIDEO_UPLOAD_ON_WIFI = "instant_video_upload_on_wifi";
+    public static final String INSTANT_VIDEO_UPLOAD_ON_CHARGING = "instant_video_upload_on_charging";
+    public static final String INSTANT_VIDEO_UPLOADING = "instant_video_uploading";
+    public static final String PREFS_INSTANT_BEHAVIOUR = "prefs_instant_behaviour";
+    public static final String ABOUT_APP = "about_app";
     public static final String LOGGER = "logger";
     public static final String FEEDBACK = "feedback";
     public static final String RECOMMEND = "recommend";
@@ -371,7 +373,7 @@ public class Preferences extends PreferenceActivity {
 
         mPrefInstantUploadUseSubfolders = findPreference(INSTANT_UPLOAD_PATH_USE_SUBFOLDERS);
         mPrefInstantUploadPathWiFi =  findPreference(INSTANT_UPLOAD_ON_WIFI);
-        mPrefInstantPictureUploadOnlyOnCharging = findPreference("instant_upload_on_charging");
+        mPrefInstantPictureUploadOnlyOnCharging = findPreference(INSTANT_UPLOAD_ON_CHARGING);
         mPrefInstantUpload = findPreference(INSTANT_UPLOADING);
         
         toggleInstantPictureOptions(((CheckBoxPreference) mPrefInstantUpload).isChecked());
@@ -409,7 +411,7 @@ public class Preferences extends PreferenceActivity {
         mPrefInstantVideoUploadUseSubfolders = findPreference(INSTANT_VIDEO_UPLOAD_PATH_USE_SUBFOLDERS);
         mPrefInstantVideoUploadPathWiFi =  findPreference(INSTANT_VIDEO_UPLOAD_ON_WIFI);
         mPrefInstantVideoUpload = findPreference(INSTANT_VIDEO_UPLOADING);
-        mPrefInstantVideoUploadOnlyOnCharging = findPreference("instant_video_upload_on_charging");
+        mPrefInstantVideoUploadOnlyOnCharging = findPreference(INSTANT_VIDEO_UPLOAD_ON_CHARGING);
         toggleInstantVideoOptions(((CheckBoxPreference) mPrefInstantVideoUpload).isChecked());
         
         mPrefInstantVideoUpload.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -430,7 +432,7 @@ public class Preferences extends PreferenceActivity {
                 ((CheckBoxPreference)mPrefInstantUpload).isChecked());
 
         /* About App */
-       pAboutApp = (Preference) findPreference(ABOUT_APP);
+       pAboutApp = findPreference(ABOUT_APP);
        if (pAboutApp != null) { 
                pAboutApp.setTitle(String.format(getString(R.string.about_android),
                        getString(R.string.app_name)));
@@ -575,8 +577,7 @@ public class Preferences extends PreferenceActivity {
 
         if (requestCode == ACTION_SELECT_UPLOAD_PATH && resultCode == RESULT_OK){
 
-            OCFile folderToUpload =
-                    (OCFile) data.getParcelableExtra(UploadPathActivity.EXTRA_FOLDER);
+            OCFile folderToUpload = data.getParcelableExtra(UploadPathActivity.EXTRA_FOLDER);
 
             mUploadPath = folderToUpload.getRemotePath();
 
@@ -591,8 +592,7 @@ public class Preferences extends PreferenceActivity {
 
         } else if (requestCode == ACTION_SELECT_UPLOAD_VIDEO_PATH && resultCode == RESULT_OK){
 
-            OCFile folderToUploadVideo =
-                    (OCFile) data.getParcelableExtra(UploadPathActivity.EXTRA_FOLDER);
+            OCFile folderToUploadVideo = data.getParcelableExtra(UploadPathActivity.EXTRA_FOLDER);
 
             mUploadVideoPath = folderToUploadVideo.getRemotePath();
 
@@ -739,8 +739,7 @@ public class Preferences extends PreferenceActivity {
         SharedPreferences.Editor editor = appPrefs.edit();
         editor.putString(INSTANT_UPLOAD_PATH, mUploadPath)
                 .putString(INSTANT_UPLOAD_PATH_ACCOUNT, mUploadPathAccount);
-        editor.putString("instant_upload_path_account", mUploadPathAccount);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -764,7 +763,6 @@ public class Preferences extends PreferenceActivity {
         SharedPreferences.Editor editor = appPrefs.edit();
         editor.putString(INSTANT_VIDEO_UPLOAD_PATH, mUploadVideoPath)
                 .putString(INSTANT_VIDEO_UPLOAD_PATH_ACCOUNT, mUploadVideoPathAccount);
-        editor.putString("instant_video_upload_path_account", mUploadVideoPathAccount);
-        editor.commit();
+        editor.apply();
     }
 }
