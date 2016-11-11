@@ -343,6 +343,13 @@ public class FileDownloader extends Service
                 boundListener.onTransferProgress(progressRate, totalTransferredSoFar,
                         totalToTransfer, fileName);
             }
+            Intent in=new Intent();
+            in.putExtra("progressRate",progressRate);
+            in.putExtra("totalTransferredSoFar",totalTransferredSoFar);
+            in.putExtra("totalToTransfer",totalToTransfer);
+            in.putExtra("fileName",fileName);
+            in.setAction("com.owncloud.android.files.services");
+            sendBroadcast(in);
         }
 
     }
