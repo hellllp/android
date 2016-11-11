@@ -46,7 +46,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.Downlo
     public void onBindViewHolder(DownloadViewHolder holder, final int position) {
 
         holder.download_name.setText(Filename.get(position));
-        holder.download_progress_bar.setMax(totalToTransfer.get(position).intValue());
+        //holder.download_progress_bar.setMax(totalToTransfer.get(position).intValue());
         holder.download_progress_bar.setProgress((int)totalTransferredSoFar.get(position).intValue());
 
     }
